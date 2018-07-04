@@ -1,0 +1,34 @@
+[dev]
+dev-project1 subnet_name=dev_dmz subnet_mask=10.20.1.0/24
+
+[dev:vars]
+vnet_name=dev_vnet
+vnet_mask=10.20.0.0/16
+
+########################
+
+[test]
+test-project1 subnet_name=test_dmz subnet_mask=10.10.1.0/24
+
+[test:vars]
+vnet_name=test_vnet
+vnet_mask=10.10.0.0/16
+
+########################
+
+[staging]
+staging-project1 subnet_name=staging_dmz subnet_mask=10.30.1.0/24
+
+
+[staging:vars]
+vnet_name=staging_vnet
+vnet_mask=10.30.0.0/16
+
+########################
+
+[prod]
+
+
+[prod:vars]
+vnet_name=prod_vnet
+vnet_mask=10.40.0.0/16

@@ -1,0 +1,10 @@
+- debug:
+    msg: "Creating virtual network with name {{ vnet_name }} and mask {{ vnet_mask }}"
+
+
+
+- name: Create virtual network
+  azure_rm_virtualnetwork:
+    resource_group: Testing
+    name: "{{ vnet_name }}"
+    address_prefixes: "{{ vnet_mask }}"

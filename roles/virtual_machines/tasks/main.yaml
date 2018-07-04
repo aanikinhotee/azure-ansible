@@ -1,0 +1,50 @@
+- name: Create storage account
+  azure_rm_storageaccount:
+    resource_group: Testing
+    name: testaccount0012
+    account_type: Standard_LRS
+
+- name: Create public ip
+  azure_rm_publicipaddress:
+    resource_group: Testing
+    allocation_method: Static
+    name: "{{ (inventory_hostname) + '-publicip001' }}"
+
+- name: Create security group that allows SSH
+  azure_rm_securitygroup:
+    resource_group: Testing
+    name: secgroup001
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+
+- name: Create NIC
+  azure_rm_networkinterface:
+    resource_group: Testing
+    name: "{{ (inventory_hostname) + '-nic001' }}"
+    virtual_network: "{{ vnet_name }}"
+    subnet: "{{ subnet_name }}"
+    public_ip_name: "{{ (inventory_hostname) + '-publicip001' }}"
+    security_group: secgroup001
+
+- name: Create virtual machine
+  azure_rm_virtualmachine:
+    resource_group: Testing
+    name: "{{ inventory_hostname }}"
+    vm_size: Standard_D1
+    storage_account: testaccount0012
+    storage_container: "{{ (inventory_hostname) + 'vm001' }}"
+    storage_blob: "{{ (inventory_hostname) + 'vm001.vhd' }}"
+    admin_username: admina
+    admin_password: Passwor1d#
+    network_interfaces: "{{ (inventory_hostname) + '-nic001' }}"
+    image:
+      offer: CentOS
+      publisher: OpenLogic
+      sku: '7.1'
+      version: latest
+
