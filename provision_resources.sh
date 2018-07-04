@@ -2,4 +2,4 @@
 
 source setenv.sh
 
-ansible-playbook provision_resources.yaml
+ansible-playbook --ask-become-pass provision_resources.yaml

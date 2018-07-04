@@ -1,0 +1,16 @@
+- name: Get facts for one Public IP
+  azure_rm_publicipaddress_facts:
+    resource_group: Testing
+    name: "{{ (inventory_hostname) + '-publicip001' }}"
+  register: public_ip
+
+- debug:
+    msg: "{{ public_ip.ansible_facts.azure_publicipaddresses[0].properties.ipAddress }}"
+  when: public_ip.ansible_facts.azure_publicipaddresses
+
+- name: Insert a line at the end of a file.
+  become: yes
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ public_ip.ansible_facts.azure_publicipaddresses[0].properties.ipAddress }}  {{ inventory_hostname }}"
+  when: public_ip.ansible_facts.azure_publicipaddresses 

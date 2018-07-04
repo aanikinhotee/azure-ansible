@@ -8,6 +8,7 @@
     - virtual_networks
     - subnets
     - virtual_machines
+    - public_ip
 
 - hosts: test
   become: no

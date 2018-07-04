@@ -1,0 +1,35 @@
+- hosts: dev
+  become: no
+  serial: 1
+  roles:
+    - update
+    - install_software
+
+- hosts: test
+  become: no
+  gather_facts: no
+  connection: local
+  serial: 1
+  roles:
+    - update
+    - install_software
+
+
+- hosts: staging
+  become: no
+  gather_facts: no
+  connection: local
+  serial: 1
+  roles:
+    - update
+    - install_software
+
+
+- hosts: prod
+  become: no
+  gather_facts: no
+  connection: local
+  serial: 1
+  roles:
+    - update
+    - install_software
