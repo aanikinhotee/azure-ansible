@@ -5,7 +5,7 @@
 - name: Create storage account
   azure_rm_storageaccount:
     resource_group: Testing
-    name: testaccount0012
+    name: testaccount0013
     account_type: Standard_LRS
 
 - name: Create public ip
@@ -14,6 +14,24 @@
     allocation_method: Static
     name: "{{ (inventory_hostname) + '-publicip001' }}"
   when: public_ip_needed
+
+- name: Create security group that allows SSH and HTTP
+  azure_rm_securitygroup:
+    resource_group: Testing
+    name: secgroup002
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: HTTP
+        protocol: Tcp
+        destination_port_range: 80
+        access: Allow
+        priority: 102
+        direction: Inbound
 
 - name: Create security group that allows SSH
   azure_rm_securitygroup:
@@ -34,7 +52,7 @@
     virtual_network: "{{ vnet_name }}"
     subnet: "{{ subnet_name }}"
     public_ip_name: "{{ (inventory_hostname) + '-publicip001' }}"
-    security_group: secgroup001
+    security_group: secgroup002
   when: public_ip_needed
 
 
@@ -53,14 +71,15 @@
     resource_group: Testing
     name: "{{ inventory_hostname }}"
     vm_size: Standard_D1
-    storage_account: testaccount0012
+    storage_account: testaccount0013
     storage_container: "{{ (inventory_hostname) + 'vm001' }}"
     storage_blob: "{{ (inventory_hostname) + 'vm001.vhd' }}"
     admin_username: admina
     ssh_password_enabled: false
     ssh_public_keys: 
       - path: /home/admina/.ssh/authorized_keys
-        key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1B/dOfpryos9TgYYyqWzBetG9WffkxhDQRAXgyXqJ/PLO05fkz4K2Yr89B9pIv8p8PKcESANcThXKm/KBW1i6nKMd8fFdpeBdNvRX9rZhOS6aMmEu8+MabkpNYSr7gZRS7NsKXUBUY84mNQRxrPKT4KGhYxgwSnkkyYWnuPw4JIhhwomiwutbs39NBwfefQ2BbS/kYs4bKlp4q0KZ1BTZisqHM+HPSi63lE9e+wtUjYf5Onzu7DmKYGFQzLVXwBAMPnOc/C3QcJbJhoQe4vqFwB/yslsSTT5ym9JN4C1IdMjxubxOKQt85sNLzZ7J2+CnXaUgAQQwx7YR023Fnh97w== anton.anikin@icefire.ee"
+        key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxlhGUBohsRL2z5OgTta6KvgOJ2StnS+ka29SShQfzCWmiVhm2xy2Y9WWEGAfDjuLpGIHo5c1pZi/jgagf2iV/mc8c8zneF2nQ3veZRwBiyWeArO6vDX8w9WAB7SXU1W6LOjkD8+QbWd3b5824mryRTWZyQRhmXrUSXA1CrZzzahRXQIzdt/d133j6UTsogSsizwE6+vAmr1ZWffVQedIUbZGWnO9rPyvwuFcQpYmHwO2S7tFhstTjkE85WqjcdDmwHLbo5Mar19VEIjSuGzmbJtQEkssVnqM16PGvTmakL8T6c6QgqW5xpWXmHMou0rd+MaF1xYTwVDYaEG0pjSR3 root@ubuntu-s-1vcpu-1gb-fra1-01
+"
     network_interfaces: "{{ (inventory_hostname) + '-nic001' }}"
     image:
       offer: CentOS
