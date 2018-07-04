@@ -2,6 +2,7 @@
   become: no
   gather_facts: no
   connection: local
+  serial: 1
   roles:
     - resource_group
     - virtual_networks
@@ -12,6 +13,7 @@
   become: no
   gather_facts: no
   connection: local
+  serial: 1
   roles:
     - resource_group
     - virtual_networks
@@ -23,6 +25,7 @@
   become: no
   gather_facts: no
   connection: local
+  serial: 1
   roles:
     - resource_group
     - virtual_networks
@@ -34,6 +37,7 @@
   become: no
   gather_facts: no
   connection: local
+  serial: 1
   roles:
     - resource_group
     - virtual_networks

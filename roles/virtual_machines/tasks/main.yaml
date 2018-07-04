@@ -1,3 +1,7 @@
+- debug:
+    msg: "Creating virtual machine {{ inventory_hostname }} , public_ip_needed = {{ public_ip_needed }}"
+
+
 - name: Create storage account
   azure_rm_storageaccount:
     resource_group: Testing
@@ -9,6 +13,7 @@
     resource_group: Testing
     allocation_method: Static
     name: "{{ (inventory_hostname) + '-publicip001' }}"
+  when: public_ip_needed
 
 - name: Create security group that allows SSH
   azure_rm_securitygroup:
@@ -22,7 +27,7 @@
         priority: 101
         direction: Inbound
 
-- name: Create NIC
+- name: Create NIC with public IP
   azure_rm_networkinterface:
     resource_group: Testing
     name: "{{ (inventory_hostname) + '-nic001' }}"
@@ -30,6 +35,18 @@
     subnet: "{{ subnet_name }}"
     public_ip_name: "{{ (inventory_hostname) + '-publicip001' }}"
     security_group: secgroup001
+  when: public_ip_needed
+
+
+- name: Create NIC without public IP
+  azure_rm_networkinterface:
+    resource_group: Testing
+    name: "{{ (inventory_hostname) + '-nic001' }}"
+    virtual_network: "{{ vnet_name }}"
+    subnet: "{{ subnet_name }}"
+    security_group: secgroup001
+  when: not public_ip_needed
+
 
 - name: Create virtual machine
   azure_rm_virtualmachine:
