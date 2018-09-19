@@ -1,12 +1,11 @@
 [dev]
-dev-project1 subnet_name=dev_dmz subnet_mask=10.20.1.0/24 public_ip_needed=True ansible_user=admina vm_size=Standard_D1
-dev-project2 subnet_name=dev_squad2 subnet_mask=10.20.2.0/24 public_ip_needed=False ansible_user=admina vm_size=Standard_D2
-dev-project3 resource_group=anton-test2  subnet_name=dev_squad3 subnet_mask=10.20.3.0/24 public_ip_needed=False ansible_user=admina vm_size=Standard_D2
+dev-project1 resource_group=anton-test subnet_name=dev_dmz subnet_mask=10.20.1.0/24 public_ip_needed=True ansible_user=admina vm_size=Standard_D1
+dev-project2 resource_group=anton-test subnet_name=dev_squad2 subnet_mask=10.20.2.0/24 public_ip_needed=False ansible_user=admina vm_size=Standard_D1
+dev-project3 resource_group=anton-test2  subnet_name=dev_squad3 subnet_mask=10.20.3.0/24 public_ip_needed=False ansible_user=admina vm_size=Standard_D1
 
 [dev:vars]
 vnet_name=dev_vnet
 vnet_mask=10.20.0.0/16
-resource_group=anton-test
 
 ########################
 
