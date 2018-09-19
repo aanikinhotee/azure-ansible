@@ -1,4 +1,26 @@
 - debug:
+    msg: "Creating security groups"
+
+
+- name: Create security group that allows SSH and HTTP
+  azure_rm_securitygroup:
+    resource_group: "{{ resource_group }}"
+    name: "{{ (inventory_hostname) + '-secgroup001' }}" 
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: HTTP
+        protocol: Tcp
+        destination_port_range: 80
+        access: Allow
+        priority: 102
+        direction: Inbound
+
+- debug:
     msg: "Creating virtual machine {{ inventory_hostname }} , public_ip_needed = {{ public_ip_needed }}"
 
 
@@ -16,7 +38,7 @@
     virtual_network: "{{ vnet_name }}"
     subnet: "{{ subnet_name }}"
     public_ip_name: "{{ (inventory_hostname) + '-publicip001' }}"
-    security_group: "{{ security_group }}" 
+    security_group: "{{ (inventory_hostname) + '-secgroup001' }}" 
   when: public_ip_needed
 
 - name: Create NIC without public IP
@@ -25,7 +47,7 @@
     name: "{{ (inventory_hostname) + '-nic001' }}"
     virtual_network: "{{ vnet_name }}"
     subnet: "{{ subnet_name }}"
-    security_group: "{{ security_group }}"
+    security_group: "{{ (inventory_hostname) + '-secgroup001' }}"
   when: not public_ip_needed
 
 
@@ -34,14 +56,13 @@
     resource_group: "{{ resource_group }}"
     name: "{{ inventory_hostname }}"
     vm_size: "{{ vm_size }}"
-    storage_account: "{{ storage_account }}"
-    storage_container: "{{ (inventory_hostname) + 'vm001' }}"
-    storage_blob: "{{ (inventory_hostname) + 'vm001.vhd' }}"
+    managed_disk_type: Standard_LRS
     admin_username: "{{ ansible_user }}" 
     ssh_password_enabled: false
     ssh_public_keys: 
       - path: /home/admina/.ssh/authorized_keys
         key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxlhGUBohsRL2z5OgTta6KvgOJ2StnS+ka29SShQfzCWmiVhm2xy2Y9WWEGAfDjuLpGIHo5c1pZi/jgagf2iV/mc8c8zneF2nQ3veZRwBiyWeArO6vDX8w9WAB7SXU1W6LOjkD8+QbWd3b5824mryRTWZyQRhmXrUSXA1CrZzzahRXQIzdt/d133j6UTsogSsizwE6+vAmr1ZWffVQedIUbZGWnO9rPyvwuFcQpYmHwO2S7tFhstTjkE85WqjcdDmwHLbo5Mar19VEIjSuGzmbJtQEkssVnqM16PGvTmakL8T6c6QgqW5xpWXmHMou0rd+MaF1xYTwVDYaEG0pjSR3 root@ubuntu-s-1vcpu-1gb-fra1-01
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA1B/dOfpryos9TgYYyqWzBetG9WffkxhDQRAXgyXqJ/PLO05fkz4K2Yr89B9pIv8p8PKcESANcThXKm/KBW1i6nKMd8fFdpeBdNvRX9rZhOS6aMmEu8+MabkpNYSr7gZRS7NsKXUBUY84mNQRxrPKT4KGhYxgwSnkkyYWnuPw4JIhhwomiwutbs39NBwfefQ2BbS/kYs4bKlp4q0KZ1BTZisqHM+HPSi63lE9e+wtUjYf5Onzu7DmKYGFQzLVXwBAMPnOc/C3QcJbJhoQe4vqFwB/yslsSTT5ym9JN4C1IdMjxubxOKQt85sNLzZ7J2+CnXaUgAQQwx7YR023Fnh97w== anton.anikin@icefire.ee
 "
     network_interfaces: "{{ (inventory_hostname) + '-nic001' }}"
     image:

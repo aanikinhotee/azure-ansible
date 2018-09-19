@@ -7,8 +7,6 @@
     - resource_group
     - virtual_networks
     - subnets
-    - storage_accounts
-    - security_groups
     - virtual_machines
     - public_ip
 
