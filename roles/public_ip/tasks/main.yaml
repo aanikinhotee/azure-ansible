@@ -1,6 +1,6 @@
 - name: Get facts for one Public IP
   azure_rm_publicipaddress_facts:
-    resource_group: Testing
+    resource_group: "{{ resource_group }}"
     name: "{{ (inventory_hostname) + '-publicip001' }}"
   register: public_ip
 

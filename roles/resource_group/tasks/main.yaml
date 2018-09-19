@@ -1,6 +1,6 @@
 - name: Create a resource group
   azure_rm_resourcegroup:
-    name: Testing
+    name: "{{ resource_group }}"
     location: westus
     tags:
         testing: testing

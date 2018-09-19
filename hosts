@@ -1,10 +1,12 @@
 [dev]
-dev-project1 subnet_name=dev_dmz subnet_mask=10.20.1.0/24 public_ip_needed=True ansible_user=admina
-dev-project2 subnet_name=dev_squad2 subnet_mask=10.20.2.0/24 public_ip_needed=False ansible_user=admina
+dev-project1 subnet_name=dev_dmz subnet_mask=10.20.1.0/24 public_ip_needed=True security_group=secgroup002 ansible_user=admina vm_size=Standard_D1
+dev-project2 subnet_name=dev_squad2 subnet_mask=10.20.2.0/24 public_ip_needed=False security_group=secgroup001 ansible_user=admina vm_size=Standard_D2s_v3
 
 [dev:vars]
 vnet_name=dev_vnet
 vnet_mask=10.20.0.0/16
+resource_group=anton-test
+storage_account=testaccount0013
 
 ########################
 
