@@ -4,7 +4,9 @@
   serial: 1
   roles:
     - update
-    - install_software
+    - install_elasticsearch
+    - install_kibana
+    - install_logstash
 
 - hosts: test
   become: no
@@ -13,7 +15,6 @@
   serial: 1
   roles:
     - update
-    - install_software
 
 
 - hosts: staging
@@ -23,7 +24,6 @@
   serial: 1
   roles:
     - update
-    - install_software
 
 
 - hosts: prod
@@ -33,4 +33,3 @@
   serial: 1
   roles:
     - update
-    - install_software

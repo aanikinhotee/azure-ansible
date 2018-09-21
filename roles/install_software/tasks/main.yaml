@@ -1,6 +1,0 @@
-- name: install the latest version of Apache
-  become: true
-  yum:
-    name: httpd
-    state: latest
-  when: public_ip_needed

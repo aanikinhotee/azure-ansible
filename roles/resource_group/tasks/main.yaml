@@ -1,7 +1,4 @@
 - name: Create a resource group
   azure_rm_resourcegroup:
     name: "{{ resource_group }}"
-    location: westus
-    tags:
-        testing: testing
-        delete: never
+    location: westeurope
